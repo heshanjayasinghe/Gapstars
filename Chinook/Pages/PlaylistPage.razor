@@ -7,8 +7,13 @@
 @using System.Security.Claims;
 @using Chinook.Services;
 @using Chinook.ClientModels;
-<h1>Playlist <strong>Playlist?.Name</strong><a href="#" class="m-1" title="Remove from this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
 
+@if (playList!=null && !String.IsNullOrEmpty(playList.Name))
+{
+    
+<h1>Playlist <strong>@playList.Name</strong><a href="#" class="m-1" title="Remove from this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
+
+}
 @if (!string.IsNullOrWhiteSpace(InfoMessage))
 {
     <div class="alert alert-info fade show">
