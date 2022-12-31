@@ -1,4 +1,4 @@
-﻿@inject IPlayListService PlayListService
+﻿@inject IChinookService ChinookService
 @using System.Security.Claims;
 @using Chinook.Services;
 
@@ -44,9 +44,9 @@
         CurrentUserId = await GetUserId();
 
         await InvokeAsync(StateHasChanged);
-        await PlayListService.Initialize(CurrentUserId);
+        await ChinookService.Initialize(CurrentUserId);
 
-        playlists=await PlayListService.GetAllPlayLists(CurrentUserId);
+        playlists=await ChinookService.GetAllPlayLists(CurrentUserId);
     }
 
     private async Task<string> GetUserId()

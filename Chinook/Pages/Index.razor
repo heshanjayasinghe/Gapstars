@@ -3,7 +3,7 @@
 
 @using Chinook.Models
 @using Microsoft.EntityFrameworkCore
-@inject IPlayListService PlayListService
+@inject IChinookService ChinookService
 @using System.Security.Claims;
 @using Chinook.Services;
 
@@ -42,7 +42,7 @@ else
     
     protected override async Task OnInitializedAsync() {
         await InvokeAsync(StateHasChanged);
-        Artists = await PlayListService.GetArtists();
+        Artists = await ChinookService.GetArtists();
     }
 
 }

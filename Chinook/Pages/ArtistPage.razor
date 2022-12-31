@@ -1,5 +1,5 @@
 ﻿@page "/artist/{ArtistId:long}"
-@inject IPlayListService PlayListService
+@inject IChinookService ChinookService
 @attribute [Authorize]
 
 @using Chinook.Models
@@ -80,8 +80,8 @@ else
     protected override async Task OnInitializedAsync()
     {   CurrentUserId = await GetUserId();
        // await ArtistService.Initialize(CurrentUserId);
-        await PlayListService.Initialize(CurrentUserId);
-        artistPageDto=await PlayListService.InitializArtisteData(ArtistId);
+        await ChinookService.Initialize(CurrentUserId);
+        artistPageDto=await ChinookService.InitializArtisteData(ArtistId);
     }
 
      public async Task<string> GetUserId()
@@ -104,7 +104,7 @@ else
     private async Task OpenPlaylistDialog(PlaylistTrack track)
     {   var trackId=track.TrackId;
         CloseInfoMessage();
-        UserPlayLists=await PlayListService.GetAllPlayLists(CurrentUserId);
+        UserPlayLists=await ChinookService.GetAllPlayLists(CurrentUserId);
         SelectedTrack = artistPageDto.Tracks.FirstOrDefault(t => t.TrackId == trackId);
         PlaylistDialog.Open();
     }
@@ -121,13 +121,13 @@ else
             
             long lplaylistId = Convert.ToInt64(Convert.ToDecimal(playlistId));
             //add to existing
-             PlayListService.AddToExistingPlayList(lplaylistId,new PlaylistTrack(){
+             ChinookService.AddToExistingPlayList(lplaylistId,new PlaylistTrack(){
                     TrackId=SelectedTrack.TrackId,
                     TrackName=SelectedTrack.TrackName
             } );
         }
         else{
-           await PlayListService.CreateNewPlayList(NewPlayListName,new PlaylistTrack(){
+           await ChinookService.CreateNewPlayList(NewPlayListName,new PlaylistTrack(){
                     TrackId=SelectedTrack.TrackId,
                     TrackName=SelectedTrack.TrackName
             });

@@ -17,7 +17,7 @@ builder.Services.AddDefaultIdentity<ChinookUser>(options => options.SignIn.Requi
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
-builder.Services.AddScoped<IPlayListService,PlayListService>();
+builder.Services.AddScoped<IChinookService,ChinookService>();
 
 
 builder.Services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<ChinookUser>>();

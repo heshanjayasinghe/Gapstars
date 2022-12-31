@@ -3,7 +3,7 @@ using Chinook.Models;
 
 namespace Chinook.Services
 {
-    public interface IPlayListService
+    public interface IChinookService
     {
         void AddToExistingPlayList(global::System.Int64 playListId, PlaylistTrack song);
         void AddToFavourties();

@@ -9,7 +9,7 @@ using System.Security.Claims;
 
 namespace Chinook.Services
 {
-    public class PlayListService : IPlayListService
+    public class ChinookService : IChinookService
     {
         private readonly IDbContextFactory<ChinookContext> DbFactory;
         public Chinook.ClientModels.Playlist Playlist;
@@ -17,7 +17,7 @@ namespace Chinook.Services
         public string CurrentUser;
         public Artist Artist;
         public List<PlaylistTrack> Tracks;
-        public PlayListService(IDbContextFactory<ChinookContext> contextFactory)
+        public ChinookService(IDbContextFactory<ChinookContext> contextFactory)
         {
             DbFactory = contextFactory;
         }

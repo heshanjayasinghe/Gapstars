@@ -1,6 +1,6 @@
 ﻿@page "/playlist/{PlaylistId:long}"
 @attribute [Authorize]
-@inject IPlayListService PlayListService
+@inject IChinookService ChinookService
 @inject NavigationManager NavigationManager
 @using Chinook.Models
 @using Microsoft.EntityFrameworkCore
@@ -12,7 +12,7 @@
 @if (playList!=null && !String.IsNullOrEmpty(playList.Name))
 {
     
-<h1>Playlist <strong>@playList.Name</strong><a href="#" class="m-1" title="Remove this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
+<h1> <strong>@playList.Name</strong><a href="#" class="m-1" title="Remove this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
 
 }
 @if (!string.IsNullOrWhiteSpace(InfoMessage))
@@ -81,8 +81,8 @@ else
     private ClientModels.Playlist playList;
     protected override async Task OnParametersSetAsync()
     {
-        await PlayListService.Initialize(CurrentUserId);
-        playList=await PlayListService.InitializePlayListData(PlaylistId,CurrentUserId);
+        await ChinookService.Initialize(CurrentUserId);
+        playList=await ChinookService.InitializePlayListData(PlaylistId,CurrentUserId);
     }
 
     protected override async Task OnInitializedAsync()
@@ -112,7 +112,7 @@ else
 
     private void RemoveTrack(long trackId)
     {
-        PlayListService.RemoveTrackFromExistingPlayList(PlaylistId,trackId);
+        ChinookService.RemoveTrackFromExistingPlayList(PlaylistId,trackId);
         uriHelper.NavigateTo($"/playlist/{PlaylistId}", forceLoad: true);
     }
 
@@ -122,7 +122,7 @@ else
     }
     private void RemovePlayList()
     {
-        PlayListService.RemovePlayList(PlaylistId);
+        ChinookService.RemovePlayList(PlaylistId);
         uriHelper.NavigateTo("/", forceLoad: true);
     }
     
