@@ -2,9 +2,9 @@
 
 Known issues
 ------------------------
-1. Play list does not refresh once item is deleted successfully.
+1. Play list does not refresh once item is deleted successfully. Please refresh and check for updates
 
-2. NavBar does not refrshed once new play list is successfully inserted or deleted
+2. NavBar does not refrshed once new play list is successfully inserted or deleted. . Please refresh and check for updates
 
 Implemented features
 --------------------------
