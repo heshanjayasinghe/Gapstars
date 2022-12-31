@@ -47,7 +47,7 @@ else
         var dbContext = await DbFactory.CreateDbContextAsync();
         var users = dbContext.Users.Include(a => a.UserPlaylists).ToList();
         
-        return dbContext.Artists.ToList();
+        return dbContext.Artists.Include(a=>a.Albums).ToList();
     }
 
     public async Task<List<Album>> GetAlbumsForArtist(int artistId)

@@ -13,17 +13,20 @@ Implemented features
   once a single letter inserted in to new play list text box, selecting existing
   play list for currently selected song will be disabled
 
-3. Add song to existing play list
+3. Fixed artist album count
 
-4. New playlist is successfully added to navbar(needs to manually refresh to reflect)
+4. Add song to existing play list
 
-5. Remove song from existing play list(needs to manually refresh to reflect)
+5. New playlist is successfully added to navbar(needs to manually refresh to reflect)
 
-6. Remove play list from existing play list (needs to manually refresh to reflect)
+6. Remove song from existing play list(needs to manually refresh to reflect)
+
+7. Remove play list from existing play list (needs to manually refresh to reflect)
 
 Tasks which didnt complete
 ---------------------------------------
-1. Favorite / unfavorite tracks.
-2. User should be able to rename the playlist
-3. Search for artist name
+1. Confirmation/Exception messages
+2. Favorite / unfavorite tracks.
+3. User should be able to rename the playlist
+4. Search for artist name
 
