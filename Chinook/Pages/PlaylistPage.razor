@@ -7,11 +7,12 @@
 @using System.Security.Claims;
 @using Chinook.Services;
 @using Chinook.ClientModels;
+@inject NavigationManager uriHelper;
 
 @if (playList!=null && !String.IsNullOrEmpty(playList.Name))
 {
     
-<h1>Playlist <strong>@playList.Name</strong><a href="#" class="m-1" title="Remove from this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
+<h1>Playlist <strong>@playList.Name</strong><a href="#" class="m-1" title="Remove this playlist" @onclick="@(() => RemovePlayList())" @onclick:preventDefault><i class="bi bi-trash"></i></a></h1>
 
 }
 @if (!string.IsNullOrWhiteSpace(InfoMessage))
@@ -52,11 +53,11 @@ else
                             {
                                 @if (track.IsFavorite)
                                 {
-                                    <a href="#" class="m-1" title="Unark as favorite" @onclick="@(() => UnfavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star-fill"></i></a>
+                                    @* <a href="#" class="m-1" title="Unark as favorite" @onclick="@(() => UnfavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star-fill"></i></a> *@
                                 }
                                 else
                                 {
-                                    <a href="#" class="m-1" title="Mark as favorite" @onclick="@(() => FavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star"></i></a>
+                                    @* <a href="#" class="m-1" title="Mark as favorite" @onclick="@(() => FavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star"></i></a> *@
                                 }
 
                             }
@@ -112,7 +113,7 @@ else
     private void RemoveTrack(long trackId)
     {
         PlayListService.RemoveTrackFromExistingPlayList(PlaylistId,trackId);
-        InvokeAsync(StateHasChanged);
+        uriHelper.NavigateTo($"/playlist/{PlaylistId}", forceLoad: true);
     }
 
     private void CloseInfoMessage()
@@ -122,7 +123,7 @@ else
     private void RemovePlayList()
     {
         PlayListService.RemovePlayList(PlaylistId);
-        NavigationManager.NavigateTo("/");
+        uriHelper.NavigateTo("/", forceLoad: true);
     }
     
 

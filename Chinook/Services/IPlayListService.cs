@@ -15,5 +15,6 @@ namespace Chinook.Services
         void RemoveFromFavourties();
         void RemovePlayList(global::System.Int64 playListId);
         void RemoveTrackFromExistingPlayList(global::System.Int64 playListId, global::System.Int64 trackId);
+        Task<List<Artist>> GetArtists();
     }
 }

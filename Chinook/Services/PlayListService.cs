@@ -87,7 +87,7 @@ namespace Chinook.Services
                 }
                 catch (Exception ex)
                 {
-
+                    throw ex;
                 }
             }
         }
@@ -177,6 +177,11 @@ namespace Chinook.Services
             {
                 throw;
             }
+        }
+
+        public async Task<List<Artist>> GetArtists()
+        {  
+            return DbContext.Artists.Include(a=>a.Albums).ToList();
         }
 
     }
