@@ -1,0 +1,186 @@
+﻿@page "/artist/{ArtistId:long}"
+@inject IPlayListService PlayListService
+@attribute [Authorize]
+
+@using Chinook.Models
+@using Chinook.ClientModels
+@using Microsoft.EntityFrameworkCore
+@using System.Security.Claims;
+@using Chinook.Services;
+
+
+@if (!string.IsNullOrWhiteSpace(InfoMessage))
+{
+    <div class="alert alert-info fade show">
+        <div class="d-flex align-items-start">
+            <div class="flex-grow-1">
+                @InfoMessage
+            </div>
+            <button type="button" class="btn-close" aria-label="Close" @onclick="CloseInfoMessage"></button>
+        </div>
+    </div>
+}
+
+@if (artistPageDto.Artist == null)
+{
+    <Loading />
+}
+else
+{
+    <h1>@artistPageDto.Artist.Name</h1>
+        <table class="table table-striped table-hover table-sm">
+            <thead>
+                <tr>
+                    <th>Album title</th>
+                    <th>Track name</th>
+                    <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (PlaylistTrack track in artistPageDto.Tracks)
+            {
+                <tr>
+                    <td>@track.AlbumTitle</td>
+                    <td>@track.TrackName</td>
+                    <td>
+                        @if (track.IsFavorite)
+                        {
+                            <a href="#" class="m-1" title="Unmark as favorite" @onclick="@(() => UnfavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star-filled"></i></a>
+                        }
+                        else
+                        {
+                            <a href="#" class="m-1" title="Mark as favorite" @onclick="@(() => FavoriteTrack(track.TrackId))" @onclick:preventDefault><i class="bi bi-star"></i></a>
+                        }
+                       
+                        <a href="#" class="m-1" title="Add to playlist" @onclick="@(() => OpenPlaylistDialog(track))" @onclick:preventDefault><i class="bi bi-file-earmark-plus"></i></a>
+                     
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+}
+
+@code {
+    [Parameter] public long ArtistId { get; set; }
+    [CascadingParameter] private Task<AuthenticationState> authenticationState { get; set; }
+    [Inject] IDbContextFactory<ChinookContext> DbFactory { get; set; }
+
+    private Modal PlaylistDialog { get; set; }
+
+    private Artist Artist;
+    private PlaylistTrack SelectedTrack;
+    private string InfoMessage;
+    private string CurrentUserId; 
+    private string NewPlayListName; 
+    private string SelectedPlayList; 
+    private List<UserPlaylist> UserPlayLists;
+    private ArtistDto artistPageDto;
+    protected override async Task OnInitializedAsync()
+    {   CurrentUserId = await GetUserId();
+       // await ArtistService.Initialize(CurrentUserId);
+        await PlayListService.Initialize(CurrentUserId);
+        artistPageDto=await PlayListService.InitializArtisteData(ArtistId);
+    }
+
+     public async Task<string> GetUserId()
+    {
+        var user = (await authenticationState).User;
+        var userId = user.FindFirst(u => u.Type.Contains(ClaimTypes.NameIdentifier))?.Value;
+        return userId;
+     }
+
+    private void FavoriteTrack(long trackId)
+    {
+        FavoriteTrack(trackId);
+    }
+
+    private void UnfavoriteTrack(long trackId)
+    {
+         UnfavoriteTrack(trackId);
+    }
+
+    private async Task OpenPlaylistDialog(PlaylistTrack track)
+    {   var trackId=track.TrackId;
+        CloseInfoMessage();
+        UserPlayLists=await PlayListService.GetAllPlayLists(CurrentUserId);
+        SelectedTrack = artistPageDto.Tracks.FirstOrDefault(t => t.TrackId == trackId);
+        PlaylistDialog.Open();
+    }
+
+    private  async Task AddTrackToPlaylist()
+    {
+        CloseInfoMessage();
+        if(string.IsNullOrEmpty(NewPlayListName)){
+            string playlistId="";
+            if(!string.IsNullOrEmpty(SelectedPlayList)){
+
+                playlistId=SelectedPlayList.Split("-").Last();
+            }
+            
+            long lplaylistId = Convert.ToInt64(Convert.ToDecimal(playlistId));
+            //add to existing
+             PlayListService.AddToExistingPlayList(lplaylistId,new PlaylistTrack(){
+                    TrackId=SelectedTrack.TrackId,
+                    TrackName=SelectedTrack.TrackName
+            } );
+        }
+        else{
+           await PlayListService.CreateNewPlayList(NewPlayListName,new PlaylistTrack(){
+                    TrackId=SelectedTrack.TrackId,
+                    TrackName=SelectedTrack.TrackName
+            });
+        }
+         InvokeAsync(StateHasChanged);
+         PlaylistDialog.Close();
+    }
+
+    private void CloseInfoMessage()
+    {
+        InfoMessage = "";
+    }
+    void updateDropDown(ChangeEventArgs e)
+    {
+        SelectedPlayList = e.Value.ToString();
+    }
+
+}
+
+<Modal @ref="PlaylistDialog">
+    <Title>
+        Add to playlist
+    </Title>
+    <Body>
+        @if (SelectedTrack != null)
+        {
+            <div class="form-group mb-2">
+                <label>@artistPageDto.Artist.Name - @SelectedTrack.AlbumTitle - @SelectedTrack.TrackName</label>
+            </div>
+        }
+
+        @if (UserPlayLists !=null && UserPlayLists.Count > 0)
+        {
+        <div class="form-group mb-2">
+            <label for="ExistingPlaylist">Add to existing playlist</label>
+            
+             <select disabled="@(!String.IsNullOrEmpty(NewPlayListName))" class="form-control" id="ExistingPlaylist"  @onchange="updateDropDown">
+                   <option disabled selected>--- Select play list ---</option>
+                    @foreach (var list in UserPlayLists)
+                    {
+                        <option>@list.Playlist.Name-@list.Playlist.PlaylistId</option>
+                        
+                    }
+            </select>
+        </div>
+        }
+
+        <div class="form-group mb-2">
+            <label for="NewPlaylist">Create new playlist</label>
+            <input type="text" id="NewPlaylist" @bind="NewPlayListName" class="form-control" placeholder="Name for the new playlist">
+        </div>
+    </Body>
+    <Footer>
+        <button class="btn btn-success" @onclick="AddTrackToPlaylist">Save</button>
+    </Footer>
+</Modal>

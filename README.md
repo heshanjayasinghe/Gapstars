@@ -1,5 +1,25 @@
 # Chinook
 
+Known issues
+
+1 Play list does not refresh once item is deleted
+
+2 NavBar does not refrshed once new play list is successfully inserted
+
+Implemented features
+
+1 Create new play list - 
+  once a single letter inserted in to new play list text box, selecting existing
+  play list for currently selected song will be disabled
+
+2 Add song to existing play list
+
+3 New playlist is successfully added to navbar(needs to manually refresh to reflect)
+
+4 Remove song from existing play list(needs to manually refresh to reflect)
+
+5 Remove play list from existing play list (needs to manually refresh to reflect)
+
 This application is unfinished. Please complete below tasks. Spend max 3 hours. We would like to have a short written explanation of the changes you made.
 
 1. Move data retrieval methods to separate class / classes (use dependency injection)
