@@ -1,36 +1,29 @@
 # Chinook
 
 Known issues
+------------------------
+1. Play list does not refresh once item is deleted successfully.
 
-1 Play list does not refresh once item is deleted
-
-2 NavBar does not refrshed once new play list is successfully inserted
+2. NavBar does not refrshed once new play list is successfully inserted or deleted
 
 Implemented features
-
-1 Create new play list - 
+--------------------------
+1. Move data retrieval methods to separate class / classes (use dependency injection)
+2. Create new play list - 
   once a single letter inserted in to new play list text box, selecting existing
   play list for currently selected song will be disabled
 
-2 Add song to existing play list
+3. Add song to existing play list
 
-3 New playlist is successfully added to navbar(needs to manually refresh to reflect)
+4. New playlist is successfully added to navbar(needs to manually refresh to reflect)
 
-4 Remove song from existing play list(needs to manually refresh to reflect)
+5. Remove song from existing play list(needs to manually refresh to reflect)
 
-5 Remove play list from existing play list (needs to manually refresh to reflect)
+6. Remove play list from existing play list (needs to manually refresh to reflect)
 
-This application is unfinished. Please complete below tasks. Spend max 3 hours. We would like to have a short written explanation of the changes you made.
+Tasks which didnt complete
+---------------------------------------
+1. Favorite / unfavorite tracks.
+2. User should be able to rename the playlist
+3. Search for artist name
 
-1. Move data retrieval methods to separate class / classes (use dependency injection)
-2. Favorite / unfavorite tracks. An automatic playlist should be created named "My favorite tracks"
-4. The user's playlists should be listed in the left navbar. If a playlist is added (or modified), this should reflect in the left navbar. There is already one playlist link in the Nav Menu as an example.
-3. Add tracks to a playlist (existing or new one). The dialog is already created but not yet finished.
-5. The user should be able to remove tracks from the playlist.
-6. User should be able to rename the playlist
-6. User should be able to remove the whole playlist
-7. Search for artist name
-
-When creating a user account, you will see this:
-"This app does not currently have a real email sender registered, see these docs for how to configure a real email sender. Normally this would be emailed: Click here to confirm your account."
-After you click 'Click here to confirm your account' you should be able to login.
